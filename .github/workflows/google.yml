@@ -1,0 +1,84 @@
+name: Deploy HSWebAppTwo app to Google kubernetes Engine
+
+on: [workflow_dispatch]
+  #push:
+   # branches: [ "master" ]  
+env:
+  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: hschan-javademoapp-cluster
+  GKE_APP_NAME: hschan-javademoapp
+  GKE_SERVICE: hschan-serviceforjavademoapp
+  GKE_SERVICE_ACCOUNT: hschan-javademoappserviceaccount
+  GKE_REGION: us-central1
+  GKE_ZONE: us-central1-c
+ # Just a placeholder for the first deployment
+  GITHUB_SHA: Test
+  
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Configure Workload Identity Federation and generate an access token.
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com'
+        
+    # Build the Docker image
+    - name: Build and Push
+      working-directory: ./
+      run: |-  
+        docker build \
+          --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" \
+          .
+        gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
+        docker push "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA"     
+
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: Build
+    
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com'
+
+    # Get the GKE credentials so we can deploy to the cluster
+    - id: 'get-credentials'
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+
+    # The KUBECONFIG env var is automatically exported and picked up by kubectl.
+    - id: 'get-pods'
+      run: 'kubectl get pods'
+      
+    # Deploy the new Docker image to the GKE cluster
+    - name: Deploy
+      working-directory: ./
+      run: |-
+        envsubst < service.yml | kubectl apply -f -
+        envsubst < deployment.yml | kubectl apply -f -
