@@ -1,6 +1,11 @@
-FROM tomcat
+FROM tomcat as base
+WORKDIR /src
+EXPOSE 8080
 
-#COPY ./ /
+FROM base AS build
+COPY ./WebContent ./src
+WORKDIR ./src
+RUN jar cvf demo-app.war *
 
-RUN rm -rf $CATALINA_HOME/webapps/*
-COPY demo-app.war $CATALINA_HOME/webapps/
+FROM build AS final
+RUN cp demo-app.war $CATALINA_HOME/webapps/
