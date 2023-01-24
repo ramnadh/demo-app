@@ -8,7 +8,7 @@ env:
   GKE_CLUSTER: hschan-javademoapp-cluster
   GKE_APP_NAME: hschan-javademoapp
   GKE_SERVICE: hschan-serviceforjavademoapp
-  GKE_SERVICE_ACCOUNT: hschan-javademoappserviceaccount
+  GKE_SERVICE_ACCOUNT: hschan-javademoappsvcacc
   GKE_REGION: us-central1
   GKE_ZONE: us-central1-c
  # Just a placeholder for the first deployment
@@ -32,7 +32,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
-        service_account: 'hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com'
+        service_account: '$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com'
         
     # Build the Docker image
     - name: Build and Push
@@ -63,7 +63,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
-        service_account: 'hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com'
+        service_account: '$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com'
 
     # Get the GKE credentials so we can deploy to the cluster
     - id: 'get-credentials'
