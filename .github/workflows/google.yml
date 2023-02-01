@@ -35,14 +35,14 @@ jobs:
         service_account: hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com #'hschan-javademoappsvcacc@sincere-actor-374621.iam.gserviceaccount.com' #$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com
         
     # Build the Docker image
-    #- name: Build and Push
-    #  working-directory: ./
-    #  run: |-  
-    #    docker build \
-    #     --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
-    #     --build-arg GITHUB_REF="$GITHUB_REF" \
-    #     .
-    #     --build-arg GITHUB_SHA="$GITHUB_SHA" \    
+    - name: Build and Push
+      working-directory: ./
+      run: |-  
+        #docker build \
+         #--tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
+         #--build-arg GITHUB_REF="$GITHUB_REF" \
+         #.
+         #--build-arg GITHUB_SHA="$GITHUB_SHA" \    
     
         gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
         docker push "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA"     
