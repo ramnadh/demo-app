@@ -32,7 +32,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
-        service_account: 'hschan-javademoappsvcacc@sincere-actor-374621.iam.gserviceaccount.com' #$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com
+        service_account: hschan-serviceaccount@sincere-actor-374621.iam.gserviceaccount.com #'hschan-javademoappsvcacc@sincere-actor-374621.iam.gserviceaccount.com' #$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com
         
     # Build the Docker image
     - name: Build and Push
