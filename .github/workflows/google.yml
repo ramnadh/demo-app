@@ -38,48 +38,48 @@ jobs:
     - name: Build and Push
       working-directory: ./
       run: |-  
-        docker build \
-         --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
-         --build-arg GITHUB_REF="$GITHUB_REF" \
+        #docker build \
+        # --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
+        # --build-arg GITHUB_REF="$GITHUB_REF" \
          .
          #--build-arg GITHUB_SHA="$GITHUB_SHA" \    
     
         gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
         docker push "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA"     
 
-  Deploy:
-    runs-on: ubuntu-latest
-    environment: prod
-    needs: Build
+  #Deploy:
+  #  runs-on: ubuntu-latest
+  #  environment: prod
+  #  needs: Build
     
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  #  permissions:
+  #    contents: 'read'
+  #    id-token: 'write'
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+  #  steps:
+  #  - name: Checkout
+  #    uses: actions/checkout@v3
 
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
-        service_account: "$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com"
+  #  - id: 'auth'
+  #    uses: 'google-github-actions/auth@v1'
+  #    with:
+  #      workload_identity_provider: 'projects/549315440769/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+  #      service_account: "$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com"
 
-    # Get the GKE credentials so we can deploy to the cluster
-    - id: 'get-credentials'
-      uses: google-github-actions/get-gke-credentials@v1
-      with:
-        cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_ZONE }}
+  #  # Get the GKE credentials so we can deploy to the cluster
+  #  - id: 'get-credentials'
+  #    uses: google-github-actions/get-gke-credentials@v1
+  #    with:
+  #      cluster_name: ${{ env.GKE_CLUSTER }}
+  #      location: ${{ env.GKE_ZONE }}
 
-    # The KUBECONFIG env var is automatically exported and picked up by kubectl.
-    - id: 'get-pods'
-      run: 'kubectl get pods'
+  #  # The KUBECONFIG env var is automatically exported and picked up by kubectl.
+  #  - id: 'get-pods'
+  #    run: 'kubectl get pods'
       
-    # Deploy the new Docker image to the GKE cluster
-    - name: Deploy
-      working-directory: ./
-      run: |-
-        envsubst < service.yml | kubectl apply -f -
-        envsubst < deployment.yml | kubectl apply -f -
+  #  # Deploy the new Docker image to the GKE cluster
+  #  - name: Deploy
+  #    working-directory: ./
+  #    run: |-
+  #      envsubst < service.yml | kubectl apply -f -
+  #      envsubst < deployment.yml | kubectl apply -f -
