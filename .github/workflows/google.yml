@@ -1,4 +1,4 @@
-name: Deploy HSWebAppTwo app to Google kubernetes Engine
+name: Deploy Java Demo app to Google kubernetes Engine
 
 on: [workflow_dispatch]
   #push:
