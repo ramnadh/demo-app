@@ -26,7 +26,7 @@ error = (error==null) ? "": error;
 		
 			
 			<div class="form-group">
-				<label for="emailId">Email ID:</label> <input type="email"
+				<label for="emailId">Email ID(02/09 04:24):</label> <input type="email"
 					class="form-control" id="emailId" maxlength="50" placeholder="Enter Email Id"
 					name="username" required>
 			</div>
