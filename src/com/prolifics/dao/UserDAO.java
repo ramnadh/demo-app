@@ -23,7 +23,13 @@ public class UserDAO {
 	 */
 	public UserDTO getUserDetails(String userName) {
 		UserDTO dto = null;
-		String sql = "select id,first_name, last_name, gender,phone, status from painscriptdb.user where username = ?";
+		dto.setId(1);
+		dto.setFirstName("John");
+		dto.setLastName("Doe");
+		dto.setGender("M");
+		dto.setPhone("678-901-2345");
+		dto.setStatus("Active");
+/*		String sql = "select id,first_name, last_name, gender,phone, status from painscriptdb.user where username = ?";
 		Connection con = DBConnectionUtil.getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -50,6 +56,7 @@ public class UserDAO {
 			DBConnectionUtil.closePreparedStatement(preparedStatement);
 			DBConnectionUtil.closeConnection(con);
 		}
+	*/		
 		return dto;
 	}
 
