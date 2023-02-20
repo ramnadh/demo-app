@@ -22,7 +22,7 @@ env:
   GKE_CLUSTER: hsdemoapp-cluster    # TODO: update to cluster name
   GKE_ZONE: us-central1-c   # TODO: update to cluster zone
   DEPLOYMENT_NAME: gke-hs-demoapp-test # TODO: update to deployment name
-  REPOSITORY: us.gcr.io # TODO: update to Artifact Registry docker repository
+  REPOSITORY: hsrepo # TODO: update to Artifact Registry docker repository
   IMAGE: static-site
 
 jobs:
