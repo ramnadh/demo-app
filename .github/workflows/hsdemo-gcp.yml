@@ -18,12 +18,18 @@ on:
 
 env:
   PROJECT_ID: clear-tape-376815
+  GKE_PROJECT: clear-tape-376815
   GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
   GKE_CLUSTER: hsdemoapp-cluster    # TODO: update to cluster name
   GKE_ZONE: us-central1-c   # TODO: update to cluster zone
+  GKE_REGION: us-central1
   DEPLOYMENT_NAME: gke-hs-demoapp-test # TODO: update to deployment name
   REPOSITORY: hsrepo # TODO: update to Artifact Registry docker repository
   IMAGE: static-site
+  GKE_TAG: v1
+  TEST_TAG: user/app:test
+  LATEST_TAG: user/app:latest
+  GKE_APP_NAME: hs-demoapp
 
 jobs:
   setup-build-publish-deploy:
