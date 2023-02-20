@@ -45,7 +45,7 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         token_format: 'access_token'
-        workload_identity_provider: 'projects/568539253049/locations/global/workloadIdentityPools/github-wif-pool/attribute.repository/ramnadh/demo-app'
+        workload_identity_provider: 'projects/568539253049/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
         service_account: 'gitsvcacct@clear-tape-376815.iam.gserviceaccount.com'
 
     # Alternative option - authentication via credentials json
