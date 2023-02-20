@@ -91,8 +91,7 @@ jobs:
     - name: Deploy
       working-directory: ./
       run: |-
-        envsubst < deployment.yml | kubectl apply -f -      
-        envsubst < service.yml | kubectl apply -f -
+        envsubst < deployment.yml | kubectl apply -f -            
         
     # Deploy the Docker image to the GKE cluster
     #- name: Deploy
