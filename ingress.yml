@@ -17,13 +17,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: $GKE_SERVICE
-            port:
-              number: 80        
+      - backend:
+          serviceName: $GKE_SERVICE
+          servicePort: demoapp-http
+        path: /
   #rules:
   #- http:
      # paths:
