@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: $GKE_APP_NAME
-        image: $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG
+        image: $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG
