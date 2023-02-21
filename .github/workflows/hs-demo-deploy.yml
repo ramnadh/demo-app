@@ -10,7 +10,7 @@
 #
 # For more support on how to run the workflow, please visit https://github.com/google-github-actions/setup-gcloud/tree/master/example-workflows/gke-kustomize
 
-name: Build and Deploy to GKE
+name: Deploy to GKE Autopilot Cluster 
 
 on:
   push:
@@ -57,11 +57,11 @@ jobs:
       working-directory: ./
       run: |-  
         docker build \
-         --tag $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG . 
+         --tag $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG . 
               
         gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
-        docker push $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG         
-  
+        docker push $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG
+        
   Deploy:
     runs-on: ubuntu-latest
     environment: prod
