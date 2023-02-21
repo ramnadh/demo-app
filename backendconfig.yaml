@@ -5,7 +5,6 @@ metadata:
   name: my-backendconfig
 spec:
   healthCheck:
-    checkIntervalSec: 15
-    port: 15020
-    type: HTTPS
+    checkIntervalSec: 15    
+    type: HTTP
     requestPath: /healthz
