@@ -18,8 +18,9 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: $GKE_SERVICE
-          servicePort: demoapp-http
+          service:
+            name: $GKE_SERVICE
+            port: demoapp-http
         path: /
   #rules:
   #- http:
