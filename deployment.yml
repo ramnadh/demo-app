@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: $GKE_APP_NAME
-        image: $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_APP_NAME:$GKE_TAG
+        image: $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG
 #        ports:
 #        - containerPort: 8080
 #        env:
