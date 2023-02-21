@@ -57,11 +57,11 @@ jobs:
       working-directory: ./
       run: |-  
         docker build \
-         --tag $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG . 
+         --tag $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG . 
               
         gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
-        docker push $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG         
-  
+        docker push $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG
+        
   Deploy:
     runs-on: ubuntu-latest
     environment: prod
