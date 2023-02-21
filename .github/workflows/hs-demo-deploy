@@ -1,0 +1,100 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE when there is a push to the "master" branch.
+#
+# To configure this workflow:
+#
+# 1. Ensure that your repository contains the necessary configuration for your Google Kubernetes Engine cluster, including deployment.yml, kustomization.yml, service.yml, etc.
+#
+# 2. Create and configure a Workload Identity Provider for GitHub (https://github.com/google-github-actions/auth#setting-up-workload-identity-federation)
+#
+# 3. Change the values for the GAR_LOCATION, GKE_ZONE, GKE_CLUSTER, IMAGE, REPOSITORY and DEPLOYMENT_NAME environment variables (below).
+#
+# For more support on how to run the workflow, please visit https://github.com/google-github-actions/setup-gcloud/tree/master/example-workflows/gke-kustomize
+
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:  
+  PROJECT_ID: clear-tape-376815
+  GKE_PROJECT: clear-tape-376815
+  GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
+  GKE_CLUSTER: hsdemoapp-cluster    # TODO: update to cluster name
+  GKE_ZONE: us-central1-c   # TODO: update to cluster zone
+  GKE_REGION: us-central1
+  DEPLOYMENT_NAME: hs-demoapp # TODO: update to deployment name
+  REPOSITORY: hsrepo # TODO: update to Artifact Registry docker repository
+  IMAGE: static-site
+  GKE_TAG: testimage
+  TEST_TAG: user/app:test
+  LATEST_TAG: user/app:latest
+  GKE_APP_NAME: hs-demoapp
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+
+    # Configure Workload Identity Federation and generate an access token.
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/568539253049/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'gitsvcacct@clear-tape-376815.iam.gserviceaccount.com'
+    
+    # Build the Docker image
+    - name: Build and Push
+      working-directory: ./
+      run: |-  
+        docker build \
+         --tag $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG . 
+              
+        gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
+        docker push $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY:$GKE_TAG         
+  
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: Build
+    
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/568539253049/locations/global/workloadIdentityPools/github-wif-pool/providers/githubwif'
+        service_account: 'gitsvcacct@clear-tape-376815.iam.gserviceaccount.com'
+
+    # Get the GKE credentials so we can deploy to the cluster
+    - id: 'get-credentials'
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GAR_LOCATION }}
+
+    # The KUBECONFIG env var is automatically exported and picked up by kubectl.
+    - id: 'get-pods'
+      run: 'kubectl get pods'
+      
+    # Deploy the new Docker image to the GKE cluster
+    - name: Deploy
+      working-directory: ./
+      run: |-
+        envsubst < deployment.yml | kubectl apply -f -      
+        envsubst < service.yml | kubectl apply -f -        
