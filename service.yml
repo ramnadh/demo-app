@@ -4,9 +4,9 @@ metadata:
   name: $GKE_SERVICE
   #labels:
   #  purpose: bsc-config-demo
-  # annotations:
-    # cloud.google.com/backend-config: '{"ports": {"80":"my-backendconfig"}}'
-    # cloud.google.com/neg: '{"ingress": true}'  
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"80":"my-backendconfig"}}'
+    cloud.google.com/neg: '{"ingress": true}'  
 spec:
   type: ClusterIP #LoadBalancer
   selector:
