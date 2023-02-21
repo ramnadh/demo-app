@@ -5,7 +5,7 @@ metadata:
   #labels:
   #  purpose: bsc-config-demo
   annotations:
-    cloud.google.com/backend-config: '{"ports": {"80":"my-backendconfig"}}'
+    cloud.google.com/backend-config: '{"ports": {"80":"hs-backendconfig"}}'
     cloud.google.com/neg: '{"ingress": true}'  
 spec:
   type: NodePort #LoadBalancer

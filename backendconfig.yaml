@@ -2,7 +2,7 @@
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: my-backendconfig
+  name: hs-backendconfig
 spec:
   healthCheck:
     checkIntervalSec: 15    
