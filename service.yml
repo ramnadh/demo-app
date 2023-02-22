@@ -6,13 +6,13 @@ metadata:
     # cloud.google.com/backend-config: '{"ports": {"80":"hs-backendconfig"}}'
     cloud.google.com/neg: '{"ingress": true}'  
 spec:
-  type: ClusterIP #LoadBalancer
+  type: NodePort #LoadBalancer
   selector:
     app: $GKE_APP_NAME
     purpose: $GKE_APP_NAME
     run: $GKE_APP_NAME
   ports:
-  - port: 80    
+  - port: 8080    
     targetPort: 8080
     #protocol: TCP
 #  - port: 80
