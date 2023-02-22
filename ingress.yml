@@ -23,7 +23,7 @@ spec:
           service:
             name: $GKE_SERVICE
             port: 
-                name: demoapp-http                
+                number: 80                
   #rules:
   #- http:
      # paths:
