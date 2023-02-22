@@ -15,7 +15,7 @@ spec:
     run: $GKE_APP_NAME
   ports:
   - name: demoapp-http 
-    port: 8080
+    port: 80
     protocol: TCP
     targetPort: 8080
 #  - port: 80
