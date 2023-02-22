@@ -23,14 +23,7 @@ spec:
           service:
             name: $GKE_SERVICE
             port: 
-                number: 8080                
-      - path: /demo-app/*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: $GKE_SERVICE
-            port: 
-                number: 8080
+                number: 8080      
   #rules:
   #- http:
      # paths:
