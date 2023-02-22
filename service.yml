@@ -2,19 +2,21 @@ apiVersion: v1
 kind: Service
 metadata:
   name: $GKE_SERVICE
+  namespace: hsapps.demoapp
   #labels:
   #  purpose: bsc-config-demo
-  annotations:
-    cloud.google.com/backend-config: '{"ports": {"80":"hs-backendconfig"}}'
-    cloud.google.com/neg: '{"ingress": true}'  
+  # annotations:
+    # cloud.google.com/backend-config: '{"ports": {"80":"hs-backendconfig"}}'
+    # cloud.google.com/neg: '{"ingress": true}'  
 spec:
   type: NodePort #LoadBalancer
   selector:
     app: $GKE_APP_NAME
     purpose: $GKE_APP_NAME
+    run: $GKE_APP_NAME
   ports:
   - name: demoapp-http 
-    port: 80
+    port: 8080
     protocol: TCP
     targetPort: 8080
 #  - port: 80

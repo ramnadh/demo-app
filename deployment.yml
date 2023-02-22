@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: $GKE_APP_NAME-deploy
+  namespace: hsapps.demoapp
 spec:
   replicas: 2
   selector:
@@ -17,3 +18,6 @@ spec:
       containers:
       - name: $GKE_APP_NAME
         image: $GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$REPOSITORY/$IMAGE:$GKE_TAG
+        ports:
+        - containerPort: 8080
+          protocol: TCP
