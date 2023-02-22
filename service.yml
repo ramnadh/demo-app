@@ -4,11 +4,11 @@ metadata:
   name: $GKE_SERVICE  
   #labels:
   #  purpose: bsc-config-demo
-  # annotations:
+    annotations:
     # cloud.google.com/backend-config: '{"ports": {"80":"hs-backendconfig"}}'
-    # cloud.google.com/neg: '{"ingress": true}'  
+      cloud.google.com/neg: '{"ingress": true}'  
 spec:
-  type: LoadBalancer #LoadBalancer
+  type: ClusterIP #LoadBalancer
   selector:
     app: $GKE_APP_NAME
     purpose: $GKE_APP_NAME
