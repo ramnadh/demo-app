@@ -20,7 +20,7 @@ env:
   PROJECT_ID: clear-tape-376815
   GKE_PROJECT: clear-tape-376815
   GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  GKE_CLUSTER: hsdemoapp-cluster    # TODO: update to cluster name
+  GKE_CLUSTER: eval-cluster    # TODO: update to cluster name
   GKE_SERVICE: hsdemoapp-service
   GKE_INGRESS: hsdemoapp-ingress
   GKE_ZONE: us-central1-c   # TODO: update to cluster zone
