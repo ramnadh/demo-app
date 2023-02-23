@@ -1,14 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hs-ingress  
-  # annotations:
-    # kubernetes.io/ingress.class: "gce"
+  name: hs-ingress
 spec:
   rules:
   - http:
       paths:
-      - path: /*
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: $GKE_APP_NAME
+            port:
+              number: 8080                        
+      - path: /demo-app
         pathType: ImplementationSpecific
         backend:
           service:
