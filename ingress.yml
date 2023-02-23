@@ -6,17 +6,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: $GKE_APP_NAME
-            port:
-              name: demoapp-http                        
       - path: /demo-app
         pathType: ImplementationSpecific
         backend:
           service:
             name: $GKE_APP_NAME
             port:
-              name: demoapp-http                        
+              name: demoapp-http
