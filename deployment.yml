@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $GKE_APP_NAME-deploy  
+  name: $GKE_APP_NAME  
 spec:
   replicas: 2
   selector:
@@ -11,6 +11,7 @@ spec:
   template:
     metadata:
       labels:
+        run: $GKE_APP_NAME
         app: $GKE_APP_NAME
         purpose: $GKE_APP_NAME        
     spec:
