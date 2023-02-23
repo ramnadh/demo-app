@@ -12,11 +12,11 @@ spec:
           service:
             name: $GKE_APP_NAME
             port:
-              number: 8080                        
+              name: demoapp-http                        
       - path: /demo-app
         pathType: ImplementationSpecific
         backend:
           service:
             name: $GKE_APP_NAME
             port:
-              number: 8080                        
+              name: demoapp-http                        
