@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web3
+  namespace: demo-space
+spec:
+  selector:
+    matchLabels:
+      run: web3
+  template:
+    metadata:
+      labels:
+        run: web3
+    spec:
+      containers:
+      - image: us-central1-docker.pkg.dev/clear-tape-376815/hsrepo/static-site:testimage
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+          httpGet:
+            path: /demo-app/
+            port: 8080
+          periodSeconds: 300
+          timeoutSeconds: 60 
+          successThreshold: 1
+          failureThreshold: 3
+          initialDelaySeconds: 70      
+        livenessProbe:
+          httpGet:
+            path: /demo-app/
+            port: 8080
+          periodSeconds: 300
+          timeoutSeconds: 60
+          successThreshold: 1
+          failureThreshold: 3          
+          initialDelaySeconds: 70  
+        name: web3
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web3
+  namespace: demo-space
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: web3
+  type: NodePort  
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  namespace: demo-space
+spec:
+  rules:
+  - http:
+      paths:      
+      - path: /demo-app
+        pathType: Prefix
+        backend:
+          service:
+            name: web3
+            port:
+              number: 80
