@@ -12,4 +12,4 @@ spec:
           service:
             name: $GKE_APP_NAME
             port:
-              name: demoapp-http
+              number: 80
