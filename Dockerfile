@@ -2,8 +2,10 @@ FROM tomcat as base
 WORKDIR /src
 EXPOSE 8080
 
+
 FROM base AS build
 COPY ./WebContent ./src
+COPY ./resources ./src
 WORKDIR ./src
 RUN jar cvf demo-app.war *
 
